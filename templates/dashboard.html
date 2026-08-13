@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ChatBot — Document Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <svg class="pulse-mark" viewBox="0 0 120 24" preserveAspectRatio="none" aria-hidden="true">
+      <polyline id="pulseLine" points="0,12 20,12 26,4 32,20 38,12 120,12" />
+    </svg>
+    <span class="brand-name">ChatBot</span>
+    <span class="brand-sub">document assistant</span>
+  </div>
+  <div class="topbar-actions">
+    <span id="kbStatus" class="pill pill-muted"><i class="fas fa-database"></i> knowledge base: on</span>
+    <button id="resetBtn" class="btn btn-ghost" title="Clear this session's uploaded files and chat">
+      <i class="fas fa-rotate-left"></i> New session
+    </button>
+  </div>
+</header>
+
+<main class="layout">
+
+  <!-- LEFT: document tray -->
+  <aside class="tray">
+    <h2 class="tray-title">Document tray</h2>
+    <p class="tray-hint">Upload reports, prescriptions, lab scans, or photos of handwritten notes. Scanned and handwritten pages are read automatically with OCR.</p>
+
+    <label id="dropzone" class="dropzone" for="fileInput">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <span class="dz-main">Drop files here or click to browse</span>
+      <span class="dz-sub">PDF · PNG · JPG · WEBP · TIFF — any number of files</span>
+      <input id="fileInput" type="file" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.tiff,.tif,.bmp" hidden />
+    </label>
+
+    <ul id="fileList" class="file-list"></ul>
+
+    <div class="tray-footer">
+      <label class="toggle">
+        <input type="checkbox" id="useKbToggle" checked />
+        <span>Also search general knowledge base</span>
+      </label>
+    </div>
+  </aside>
+
+  <!-- RIGHT: chat -->
+  <section class="chat-panel">
+    <div id="messages" class="messages">
+      <div class="msg msg-bot">
+        <div class="avatar avatar-bot"><i class="fas fa-stethoscope"></i></div>
+        <div class="bubble">
+          Hi, I'm ChatBot. Upload a document on the left, or just ask a general question — I can speak my answers back to you too.
+        </div>
+      </div>
+    </div>
+
+    <div id="typingIndicator" class="typing-indicator" hidden>
+      <div class="avatar avatar-bot"><i class="fas fa-stethoscope"></i></div>
+      <div class="ecg"><span></span><span></span><span></span><span></span><span></span></div>
+    </div>
+
+    <form id="chatForm" class="composer" autocomplete="off">
+      <button type="button" id="micBtn" class="icon-btn" title="Speak your question">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <input id="textInput" name="msg" type="text" placeholder="Ask about your uploaded files, or anything..." required />
+      <button type="button" id="speakToggle" class="icon-btn active" title="Toggle spoken answers">
+        <i class="fas fa-volume-up"></i>
+      </button>
+      <button type="submit" id="sendBtn" class="icon-btn send" title="Send">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </form>
+    <div id="listeningIndicator" class="listening-pill" hidden><i class="fas fa-microphone"></i> Listening…</div>
+  </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+</body>
+</html>

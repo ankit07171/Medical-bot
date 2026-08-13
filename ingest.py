@@ -26,7 +26,7 @@ embeddings = download_hugging_face_embeddings()  # 384-dim (MiniLM-L6-v2)
 
 # --- Pinecone ---
 pc = Pinecone(api_key=PINECONE_API_KEY)
-INDEX_NAME = "medical-chatbot"
+INDEX_NAME = "medical-chatbot"  # must match the index name used in app.py
 
 if not pc.has_index(INDEX_NAME):
     pc.create_index(

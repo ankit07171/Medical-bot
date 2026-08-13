@@ -2,6 +2,13 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+# poppler-utils: renders scanned PDF pages to images for OCR (pdf2image)
+# tesseract-ocr: local OCR fallback if the Gemini vision call fails
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    poppler-utils \
+    tesseract-ocr \
+    && rm -rf /var/lib/apt/lists/*
+
 # Copy requirements first for better caching
 COPY requirements.txt .
 
@@ -11,6 +18,9 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 # Copy application code
 COPY . .
+
+# Per-session vector stores and temp uploads live here at runtime
+RUN mkdir -p chroma_store
 
 # Railway uses PORT environment variable
 ENV PORT=8080
